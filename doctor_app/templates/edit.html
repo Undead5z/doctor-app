@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Appointment — MediBook</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/" class="navbar-brand">
+      <div class="brand-icon">🏥</div>
+      <span>MediBook</span>
+    </a>
+    <div class="navbar-links">
+      <a href="/">Dashboard</a>
+      <a href="/add_doctor">Add Doctor</a>
+      <a href="/book">Book</a>
+      <a href="/view" class="active">Appointments</a>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="breadcrumb">
+      <a href="/">Dashboard</a> › <a href="/view">Appointments</a> › Edit #{{ appointment[0] }}
+    </div>
+
+    <div class="page-header">
+      <h1>✏️ Edit Appointment</h1>
+      <p>Update the details for Appointment <strong>#{{ appointment[0] }}</strong>.</p>
+    </div>
+
+    <div class="card">
+      <form method="POST" action="/edit/{{ appointment[0] }}">
+
+        <div class="form-group">
+          <label for="patient_name">🧑 Patient's Full Name</label>
+          <input type="text" id="patient_name" name="patient_name" value="{{ appointment[1] }}" required autofocus />
+        </div>
+
+        <div class="form-group">
+          <label for="doctor_id">👨‍⚕️ Select Doctor</label>
+          <select id="doctor_id" name="doctor_id" required>
+            {% for doctor in doctors %}
+              <option value="{{ doctor[0] }}" {% if doctor[0] == appointment[2] %}selected{% endif %}>
+                {{ doctor[1] }} — {{ doctor[2] }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="appointment_date">📅 Appointment Date</label>
+          <input type="date" id="appointment_date" name="appointment_date" value="{{ appointment[3] }}" required />
+        </div>
+
+        <div style="display:flex; gap:.75rem; margin-top:1.75rem; flex-wrap:wrap;">
+          <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+          <a href="/view" class="btn btn-ghost">← Cancel</a>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+
+  <footer>
+    &copy; 2025 MediBook — Doctor Appointment Booking System &nbsp;|&nbsp; Flask &amp; MySQL
+  </footer>
+
+</body>
+</html>

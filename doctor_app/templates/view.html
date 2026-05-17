@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appointments — MediBook</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/" class="navbar-brand">
+      <div class="brand-icon">🏥</div>
+      <span>MediBook</span>
+    </a>
+    <div class="navbar-links">
+      <a href="/">Dashboard</a>
+      <a href="/add_doctor">Add Doctor</a>
+      <a href="/book">Book</a>
+      <a href="/view" class="active">Appointments</a>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="breadcrumb">
+      <a href="/">Dashboard</a> › All Appointments
+    </div>
+
+    <div class="table-card">
+
+      <div class="table-header">
+        <h2>📋 All Appointments</h2>
+        <a href="/book" class="btn btn-success btn-sm">+ New Appointment</a>
+      </div>
+
+      {% if appointments %}
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th># ID</th>
+                <th>Patient Name</th>
+                <th>Doctor</th>
+                <th>Specialization</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for appt in appointments %}
+              <tr>
+                <td>#{{ appt[0] }}</td>
+                <td>{{ appt[1] }}</td>
+                <td>{{ appt[2] }}</td>
+                <td><span class="badge badge-teal">{{ appt[3] }}</span></td>
+                <td>{{ appt[4].strftime('%d %b %Y') }}</td>
+                <td>
+                  <div class="actions-cell">
+                    <a href="/edit/{{ appt[0] }}" class="btn btn-warning btn-sm">✏️ Edit</a>
+                    <a href="/delete/{{ appt[0] }}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Delete appointment #{{ appt[0] }} for {{ appt[1] }}?')">
+                      🗑️ Delete
+                    </a>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+      {% else %}
+        <div class="empty-state">
+          <div class="empty-icon">📭</div>
+          <h3>No Appointments Yet</h3>
+          <p>No appointments have been booked. Schedule one now.</p>
+          <a href="/book" class="btn btn-primary">Book First Appointment</a>
+        </div>
+      {% endif %}
+
+    </div>
+
+  </div>
+
+  <footer>
+    &copy; 2025 MediBook — Doctor Appointment Booking System &nbsp;|&nbsp; Flask &amp; MySQL
+  </footer>
+
+</body>
+</html>

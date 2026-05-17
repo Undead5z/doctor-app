@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediBook — Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/" class="navbar-brand">
+      <div class="brand-icon">🏥</div>
+      <span>MediBook</span>
+    </a>
+    <div class="navbar-links">
+      <a href="/" class="active">Dashboard</a>
+      <a href="/add_doctor">Add Doctor</a>
+      <a href="/book">Book</a>
+      <a href="/view">Appointments</a>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="page-header">
+      <h1>Welcome to MediBook 👋</h1>
+      <p>Your simple doctor appointment management system.</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card blue">
+        <div class="stat-icon">👨‍⚕️</div>
+        <div class="stat-value">{{ total_doctors }}</div>
+        <div class="stat-label">Registered Doctors</div>
+      </div>
+      <div class="stat-card teal">
+        <div class="stat-icon">📅</div>
+        <div class="stat-value">{{ total_appointments }}</div>
+        <div class="stat-label">Total Appointments</div>
+      </div>
+      <div class="stat-card gold">
+        <div class="stat-icon">🏥</div>
+        <div class="stat-value">1</div>
+        <div class="stat-label">Active Clinic</div>
+      </div>
+    </div>
+
+    <div class="nav-cards-grid">
+      <a href="/add_doctor" class="nav-card card-blue">
+        <div class="card-icon">➕</div>
+        <h3>Add a Doctor</h3>
+        <p>Register a new doctor with their name and medical specialization.</p>
+        <div class="arrow">Get started →</div>
+      </a>
+      <a href="/book" class="nav-card card-teal">
+        <div class="card-icon">📋</div>
+        <h3>Book Appointment</h3>
+        <p>Schedule a patient appointment with an available doctor and pick a date.</p>
+        <div class="arrow">Book now →</div>
+      </a>
+      <a href="/view" class="nav-card card-gold">
+        <div class="card-icon">🗂️</div>
+        <h3>View Appointments</h3>
+        <p>See all booked appointments. Edit or delete them as needed.</p>
+        <div class="arrow">View all →</div>
+      </a>
+    </div>
+
+  </div>
+
+  <footer>
+    &copy; 2025 MediBook — Doctor Appointment Booking System &nbsp;|&nbsp; Flask &amp; MySQL
+  </footer>
+
+</body>
+</html>
